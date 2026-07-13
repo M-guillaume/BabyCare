@@ -1,218 +1,219 @@
-# Guide de Démarrage Rapide - BabyCare Alert System
+# Quick Start Guide - BabyCare Alert System
 
-## 🚀 Installation et Premier Lancement
+## 🚀 Installation and First Launch
 
-### 1. Installation des dépendances
+## 1. Install Dependencies
 
-Ouvrez un terminal dans le dossier du projet et exécutez :
+Open a terminal in the project directory and run:
 
 ```bash
 flutter pub get
 ```
 
-### 2. Vérification de votre environnement
+---
+
+## 2. Check Your Environment
+
+Run:
 
 ```bash
 flutter doctor
 ```
 
-Assurez-vous que :
-- ✅ Flutter est installé
-- ✅ Android Studio / Xcode est configuré
-- ✅ Au moins un appareil est connecté ou un émulateur est disponible
+Make sure that:
 
-### 3. Ajout du fichier audio (Important!)
+- ✅ Flutter is correctly installed
+- ✅ Android Studio / Xcode is properly configured
+- ✅ At least one device is connected or an emulator is available
 
-L'application nécessite un fichier audio pour l'alarme :
+---
 
-1. Créez le dossier `assets` s'il n'existe pas déjà
-2. Téléchargez un son d'alarme MP3 (suggestions dans `assets/README.md`)
-3. Nommez-le `alarm.mp3` et placez-le dans `assets/alarm.mp3`
+## 3. Add the Alarm Audio File (Important!)
 
-**Sans ce fichier, l'alarme n'émettra que des vibrations!**
+The application requires an audio file for the alarm system.
 
-### 4. Lancement de l'application
+Steps:
 
-#### Sur Android :
+1. Create the `assets` folder if it does not already exist
+2. Download an alarm sound in MP3 format (suggestions are available in `assets/README.md`)
+3. Rename it to `alarm.mp3` and place it here:
+
+```text
+assets/alarm.mp3
+```
+
+⚠️ **Without this file, the alarm will only trigger vibrations.**
+
+---
+
+## 4. Launch the Application
+
+### Android
+
+Run:
+
 ```bash
 flutter run --release
-# ou en mode debug
+```
+
+or in debug mode:
+
+```bash
 flutter run
 ```
 
-#### Sur iOS :
+---
+
+### iOS
+
+Install CocoaPods dependencies:
+
 ```bash
 cd ios
 pod install
 cd ..
+```
+
+Then run:
+
+```bash
 flutter run --release
 ```
 
-## 📱 Test de l'Application
+---
 
-### Option 1 : Avec un Arduino/ESP32
+# 📊 Functional Verification
 
-1. **Téléversez le code suivant sur votre ESP32:**
+When the application is running correctly, you should observe:
 
-```cpp
-#include <BLEDevice.h>
-#include <BLEUtils.h>
-#include <BLEServer.h>
+## 1. At Application Startup
 
-void setup() {
-  Serial.begin(115200);
-  Serial.println("Démarrage du beacon BabyCare...");
-  
-  BLEDevice::init("ALERT_BabyCare");
-  BLEServer *pServer = BLEDevice::createServer();
-  
-  BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
-  
-  // Crée les données de broadcast
-  BLEAdvertisementData advertisementData;
-  advertisementData.setName("ALERT_BabyCare");
-  advertisementData.setManufacturerData("ALERT_2024");
-  
-  pAdvertising->setAdvertisementData(advertisementData);
-  pAdvertising->start();
-  
-  Serial.println("Beacon actif!");
-}
+- Permission requests appear (allow all required permissions)
+- The interface displays the status:
 
-void loop() {
-  delay(1000);
-}
+```
+Inactive
 ```
 
-2. **Alimentez l'ESP32**
-3. **Lancez l'application BabyCare sur votre téléphone**
-4. **Appuyez sur "Démarrer la surveillance"**
-5. **L'alarme devrait se déclencher automatiquement!**
+---
 
-### Option 2 : Avec l'application nRF Connect
+## 2. After Pressing "Start Monitoring"
 
-1. **Téléchargez "nRF Connect for Mobile"** (gratuit sur Play Store/App Store)
-2. **Ouvrez nRF Connect** et allez dans l'onglet "Advertiser"
-3. **Créez un nouveau profil d'advertising:**
-   - Name: `ALERT_BabyCare`
-   - Dans "Add Record" → "Complete Local Name" → `ALERT_2024`
-4. **Activez l'advertising**
-5. **Lancez BabyCare et démarrez la surveillance**
-6. **L'alarme se déclenche quand les appareils se détectent**
+- Status changes to:
 
-### Option 3 : Simulation avec 2 téléphones
+```
+Monitoring Active 🟢
+```
 
-Vous pouvez utiliser 2 téléphones avec l'app pour tester la connectivité Bluetooth :
+- Bluetooth activity indicator is displayed
 
-1. **Tel 1** : Lance BabyCare en mode surveillance
-2. **Tel 2** : Utilise une app Bluetooth pour émettre un signal avec "ALERT" dans le nom
-3. Les deux appareils doivent être à moins de 600m l'un de l'autre
+---
 
-## 🔧 Résolution de Problèmes Courants
+## 3. When an Alert Signal Is Detected
 
-### ❌ Erreur "Bluetooth non supporté"
-**Solution** : Utilisez un appareil physique, pas un émulateur
+The application should:
 
-### ❌ "Permission denied" au lancement
-**Solution** : 
-1. Ouvrez les paramètres de l'app
-2. Accordez toutes les permissions (Bluetooth, Localisation, Notifications)
-3. Relancez l'app
+- Trigger an immediate push notification
+- Play the alarm sound
+- Activate continuous vibration
+- Display:
 
-### ❌ Pas de son d'alarme
-**Solution** :
-1. Vérifiez que `assets/alarm.mp3` existe
-2. Relancez `flutter pub get`
-3. Recompilez l'app
-4. Vérifiez le volume de votre téléphone
+```
+🚨 ALARM ACTIVE 🚨
+```
 
-### ❌ L'app ne détecte aucun signal
-**Solution** :
-1. Activez le Bluetooth sur votre téléphone
-2. Activez la localisation (obligatoire sur Android)
-3. Assurez-vous que l'émetteur est allumé et à proximité (< 100m pour tester)
-4. Redémarrez l'app
+in red
 
-### ❌ Erreur de compilation Android
-**Solution** :
+- Show the button:
+
+```
+STOP ALARM
+```
+
+---
+
+## 4. After Stopping the Alarm
+
+- Sound and vibration stop
+- Persistent notification disappears
+- Monitoring continues if it is still enabled
+
+---
+
+# 🎓 Presentation Guidelines
+
+## Key Points to Highlight
+
+### 1. Cross-platform Development
+
+- One codebase for both Android and iOS platforms
+
+### 2. Security
+
+- Signal validation using an authentication code
+
+### 3. Communication Range
+
+- Bluetooth Low Energy communication can reach several hundred meters depending on environmental conditions
+
+### 4. Real-Time Response
+
+- Near-instantaneous alert detection (< 1 second)
+
+### 5. Reliability
+
+- Background operation support for continuous monitoring
+
+---
+
+## Suggested Demonstration Flow
+
+1. Present the application interface
+2. Explain the required permissions
+3. Start the monitoring system
+4. Trigger an alert using the Bluetooth transmitter
+5. Demonstrate the notification and alarm activation
+6. Stop the alarm
+
+---
+
+# 🔮 Possible Future Improvements
+
+Possible improvements include:
+
+- Cloud server integration
+- Persistent alert history
+- Alert geolocation
+- Custom alarm volume settings
+- "Do Not Disturb" mode with configurable schedules
+- Emergency SMS notifications
+
+---
+
+# 📞 Support
+
+If you encounter issues:
+
+1. Check application logs:
+
 ```bash
-cd android
-./gradlew clean
-cd ..
-flutter clean
-flutter pub get
-flutter run
+flutter logs
 ```
 
-## 📊 Vérification du Fonctionnement
+2. Inspect errors in the console
+3. Test the application on different devices
+4. Refer to the main `README.md`
 
-Quand l'app fonctionne correctement, vous devriez voir :
+---
 
-1. **Au lancement** :
-   - Demandes de permissions (acceptez toutes)
-   - Interface avec le statut "Inactif"
+# 🎯 Presentation Checklist
 
-2. **Après "Démarrer la surveillance"** :
-   - Statut passe à "Surveillance active 🟢"
-   - Icône Bluetooth animée
+Before the demonstration:
 
-3. **Quand un signal est détecté** :
-   - Notification push immédiate
-   - Alarme sonore qui se déclenche
-   - Vibration continue
-   - Texte "🚨 ALARME ACTIVE 🚨" en rouge
-   - Bouton "ARRÊTER L'ALARME" apparaît
-
-4. **Après arrêt de l'alarme** :
-   - Son et vibration s'arrêtent
-   - Notification persistante disparaît
-   - Surveillance continue (si toujours active)
-
-## 🎓 Pour votre Présentation Scolaire
-
-### Points clés à mentionner :
-
-1. **Multi-plateforme** : Un seul code pour Android et iOS
-2. **Sécurité** : Validation du signal avec code
-3. **Portée** : Bluetooth LE peut atteindre jusqu'à 600m (selon conditions)
-4. **Temps réel** : Détection quasi-instantanée (< 1 seconde)
-5. **Fiabilité** : Fonctionne en arrière-plan
-
-### Démonstration suggérée :
-
-1. Montrez l'interface de l'app
-2. Expliquez le système de permissions
-3. Démarrez la surveillance
-4. Déclenchez l'alarme avec votre émetteur
-5. Montrez la notification et l'alarme
-6. Arrêtez l'alarme
-
-### Améliorations possibles à discuter :
-
-- Connexion à un serveur cloud
-- Historique persistant des alertes
-- Géolocalisation des alertes
-- Réglage du volume d'alarme
-- Mode "ne pas déranger" avec horaires
-- Envoi de SMS d'urgence
-
-## 📞 Support
-
-Si vous rencontrez des problèmes :
-
-1. Vérifiez les logs : `flutter logs`
-2. Inspectez les erreurs dans la console
-3. Testez sur différents appareils
-4. Consultez le README.md principal
-
-## 🎯 Checklist avant présentation
-
-- [ ] L'app compile sans erreur
-- [ ] Toutes les permissions sont accordées
-- [ ] Le fichier alarm.mp3 est présent
-- [ ] Vous avez un émetteur Bluetooth fonctionnel
-- [ ] Vous avez testé le cycle complet (surveillance → détection → alarme → arrêt)
-- [ ] Le téléphone n'est pas en mode silencieux
-- [ ] La batterie est chargée (le Bluetooth consomme!)
-
-Bon courage pour votre projet! 🚀
+- [ ] Application builds successfully
+- [ ] All required permissions are granted
+- [ ] `alarm.mp3` file is present
+- [ ] A working Bluetooth transmitter is available
+- [ ] Full workflow has been tested (monitoring → detection → alarm → stop)
+- [ ] Phone is not in silent mode
+- [ ] Battery is sufficiently charged (Bluetooth consumes power!)
