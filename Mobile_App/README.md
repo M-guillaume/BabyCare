@@ -1,17 +1,50 @@
-# babycare
+# BabyCare Mobile Application 📱
 
-A new Flutter project.
+Mobile application developed for the **BabyCare** project.  
+The application provides a user interface to monitor the child detection system embedded in a vehicle and alerts the user in case of a dangerous situation.
 
-## Getting Started
+The application communicates with the BabyCare embedded system through **Bluetooth Low Energy (BLE)** to receive real-time information and notifications.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## 🚀 Features
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+### 🔵 Bluetooth Low Energy Communication
+- Automatic scanning of nearby BabyCare devices
+- Connection with the embedded system using BLE
+- Real-time reception of alerts and status updates
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 👶 Child Safety Monitoring
+- Monitoring of the child detection system
+- Notification when a potential danger is detected
+- Real-time system status display
+
+### 📱 User Interface
+- Simple and intuitive interface
+- Connection status visualization
+- Alert display for the user
+
+---
+
+## 🛠️ Technologies
+
+### Mobile Application
+
+| Technology | Description |
+|------------|-------------|
+| Flutter | Cross-platform mobile framework |
+| Dart | Programming language |
+| FlutterBluePlus | BLE communication library |
+
+### Supported Platforms
+
+- Android ✅
+- IOS ✅
+
+## ⚙️ Installation
+
+### Requirements
+
+- Flutter SDK installed
+- Android Studio or VS Code
+- Android device with Bluetooth Low Energy support
